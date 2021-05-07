@@ -6,5 +6,22 @@
  * @see http://docs.humhub.org/dev-environment.html
  */
 return [
+    'bootstrap' => ['debug'],
+    'modules' => [
+        'gii' => [
+            'class' => 'yii\gii\Module',
+            'allowedIPs' => ['*'],
+            'generators' => [
+                'module' => [
+                    'class' => 'humhub\modules\devtools\gii\generators\ModuleGenerator',
+                ]
+            ],
+        ],
+        'debug' => [
+            'class' => 'yii\debug\Module',
+            // uncomment and adjust the following to add your IP if you are not connecting from localhost.
+            'allowedIPs' => ['*'],
+        ],
+    ]
 ];
 

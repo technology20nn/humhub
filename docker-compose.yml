@@ -1,0 +1,35 @@
+version: '3.2'
+
+services:
+  humhub-web:
+    build:
+      context: .
+    ports:
+      - 8071:80
+    volumes:
+      # Re-use local composer cache via host-volume
+#      - ~/.composer-docker/cache:/root/.composer/cache:delegated
+      # Mount source-code for development
+      - ./:/app/
+  humhub-db:
+      image: "mariadb:10.5.8"
+      restart: 'always'
+      env_file:
+        - ./.env
+      volumes:
+        - ${PWD}/mariadb:/var/lib/mysql
+      environment:
+        MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+        MYSQL_DATABASE: ${MYSQL_DATABASE}
+        MYSQL_USER: ${MYSQL_USER}
+        MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+
+  humhub-phpmyadmin:
+      image: phpmyadmin/phpmyadmin
+      environment:
+        PMA_HOST: humhub-db
+        PMA_PORT: 3306
+        PMA_ARBITRARY: 1
+      restart: always
+      ports:
+        - 8083:80
